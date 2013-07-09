@@ -34,7 +34,7 @@ something like this:
 
     [{"url": "http://localhost:5000/", "count": 75, "max": 0.0, "avg": 0.0, "min": 0.0}]
     
-But you get the idea! Each stat "object" have four fields:
+But you get the idea! Each stat "object" have five fields:
 
  - url : performance data are related to this specific URL
  - count : number of requests processed
