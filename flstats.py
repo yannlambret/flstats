@@ -8,9 +8,7 @@ This module allows you to monitor Flask requests execution time.
 Statistics can be accessed by using the '/flstats/' route.
 """
 
-import json
-
-from flask import Blueprint, Flask, jsonify, make_response, request, Response
+from flask import Blueprint, Flask, json, make_response, request, Response
 from functools import wraps
 from Queue import Queue
 from threading import Thread
