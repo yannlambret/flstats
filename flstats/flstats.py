@@ -42,9 +42,6 @@ class _Stat(object):
 class _StatsManager(object):
     """The _StatsManager class, which handles the statistics for all URLs."""
 
-    # We're using a queue to take care of concurrency
-    queue = Queue(maxsize=0)
-
     # Application statistics
     stats = {}
 
@@ -66,14 +63,17 @@ class _StatsManager(object):
 class _Worker(Thread):
     """The _Worker class, which processes statistics updates."""
 
+    # We're using a queue to take care of concurrency
+    queue = Queue(maxsize=0)
+
     def __init__(self):
         Thread.__init__(self)
 
     def run(self):
         while 1:
-            url, time = _StatsManager.queue.get(block=True)
+            url, time = self.__class__.queue.get(block=True)
             _StatsManager.stats.setdefault(url, _Stat()).update(time)
-            _StatsManager.queue.task_done()
+            self.__class__.queue.task_done()
 
 #
 # statistics decorator
@@ -87,7 +87,7 @@ def statistics(f):
         t1 = now()
         result = f(*args, **kwargs)
         t2 = now()
-        _StatsManager.queue.put((request.url, t2 - t1), block=True)
+        _Worker.queue.put((request.url, t2 - t1), block=True)
         return result
     return decorated
 
