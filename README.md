@@ -27,12 +27,32 @@ And that's it, your application now collects statistics that you can access at '
 
 Data are in the JSON format, so you will get something like this:
 
-    [{"url": "http://localhost:5000/", "count": 75, "max": 282.26, "avg": 72.0, "min": 61.07}]
-    
+    {
+      "stats": [
+        {
+          "avg": 72.0,
+          "count": 75,
+          "max": 282.26,
+          "min": 61.07,
+          "url": "http://localhost:5000/"
+        }
+      ]
+    }
+
 Well, to be honest, if you run the previous code sample on a reasonably modern hardware, you will more likely get
 something like this:
 
-    [{"url": "http://localhost:5000/", "count": 75, "max": 0.0, "avg": 0.0, "min": 0.0}]
+    {
+      "stats": [
+        {
+          "avg": 0.0,
+          "count": 75,
+          "max": 0.0,
+          "min": 0.0,
+          "url": "http://localhost:5000/"
+        }
+      ]
+    }
     
 But you get the idea! Each stat "object" have five fields:
 
@@ -41,5 +61,7 @@ But you get the idea! Each stat "object" have five fields:
  - max : longest execution time for a request
  - min : shortest execution time for a request
  - avg : average response time
+
+Time values are expressed in milliseconds.
     
 [flask]: http://flask.pocoo.org/
