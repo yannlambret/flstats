@@ -101,7 +101,7 @@ webstatistics = Blueprint('webstatistics', __name__)
 def flstats():
     """Returns statistics in the JSON format."""
 
-    return jsonify({'stats' : _StatsManager.process()})
+    return jsonify({'stats': _StatsManager.process()})
 
 #
 # Runs the worker
