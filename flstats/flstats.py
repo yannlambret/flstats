@@ -30,9 +30,6 @@ class _Stat(object):
         # Longest request execution time 
         self.max_time = 0.
 
-        # Computed data
-        self.data = {}
-
     def update(self, time):
         self.count += 1
         self.total_time += time
