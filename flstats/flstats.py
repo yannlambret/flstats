@@ -46,8 +46,8 @@ class _StatsManager(object):
     def process(cls):
         data = []
         for url in cls.stats:
-            d = {}
             stat = cls.stats[url]
+            d = {}
             d['url'] = url
             d['count'] = stat.count
             # Converts time values to milliseconds
