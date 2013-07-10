@@ -8,7 +8,7 @@ This module allows you to monitor Flask requests execution time.
 Statistics can be accessed by using the '/flstats/' route.
 """
 
-from flask import Blueprint, Flask, json, make_response, request, Response
+from flask import Blueprint, Flask, jsonify, make_response, request, Response
 from functools import wraps
 from Queue import Queue
 from threading import Thread
@@ -99,15 +99,9 @@ webstatistics = Blueprint('webstatistics', __name__)
 
 @webstatistics.route('/flstats/', methods=['GET'])
 def flstats():
-    """Takes care of JSON serialization and builds HTTP response."""
+    """Returns statistics in the JSON format."""
 
-    try:
-        data = json.dumps(_StatsManager.process())
-    except TypeError as error:
-        return make_response(error, 500)
-    response = make_response(data)
-    response.content_type = 'application/json'
-    return response
+    return jsonify({'stats' : _StatsManager.process()})
 
 #
 # Runs the worker
