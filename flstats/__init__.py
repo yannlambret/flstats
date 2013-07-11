@@ -19,3 +19,5 @@ __license__ = 'BSD'
 __copyright__ = 'Copyright 2013 Yann Lambret'
 
 __all__ = ['statistics', 'webstatistics']
+
+from .flstats import statistics, webstatistics
