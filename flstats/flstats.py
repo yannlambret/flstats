@@ -10,7 +10,7 @@ Statistics can be accessed by using the '/flstats/' route.
 
 from flask import Blueprint, Flask, jsonify, make_response, request, Response
 from functools import wraps
-from Queue import Queue
+from Queue import Queue, Full
 from threading import Thread
 from time import time as now
 
@@ -68,7 +68,7 @@ class _Worker(Thread):
 
     def run(self):
         while 1:
-            url, time = self.__class__.queue.get(block=True)
+            url, time = self.__class__.queue.get()
             _StatsManager.stats.setdefault(url, _Stat()).update(time)
             self.__class__.queue.task_done()
 
@@ -84,7 +84,12 @@ def statistics(f):
         t1 = now()
         result = f(*args, **kwargs)
         t2 = now()
-        _Worker.queue.put((request.url, t2 - t1), block=True)
+        # The queue should never be full, but we can't
+        # take the risk to block the request anyway
+        try:
+            _Worker.queue.put_nowait((request.url, t2 - t1))
+        except Full:
+            pass
         return result
     return decorated
 
