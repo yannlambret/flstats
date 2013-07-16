@@ -18,7 +18,7 @@ class FlstatsTestCase(unittest.TestCase):
 
     def setUp(self):
         """Creates a Flask test app and registers two routes
-        together with the flstats blueprint.
+        as well as the flstats blueprint.
         """ 
 
         self.app = Flask(__name__)
