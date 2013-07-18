@@ -8,7 +8,7 @@ This module allows you to monitor Flask requests execution time.
 Statistics can be accessed by using the '/flstats/' route.
 """
 
-from flask import Blueprint, Flask, jsonify, make_response, request, Response
+from flask import Blueprint, Flask, jsonify, request
 from functools import wraps
 from Queue import Queue, Full
 from threading import Thread
@@ -44,6 +44,9 @@ class _StatsManager(object):
     # Application statistics
     stats = {}
 
+    # Requests throughput
+    throughput = {}
+
     @classmethod
     def process(cls):
         data = []
@@ -52,11 +55,13 @@ class _StatsManager(object):
             d = {}
             d['url'] = url
             d['count'] = stat.count
+            d['throughput'] = stat.count - cls.throughput.setdefault(url, 0)
             # Converts time values to milliseconds
             d['avg'] = round((stat.total_time / stat.count) * 1000, 2)
             d['min'] = round(stat.min_time * 1000, 2)
             d['max'] = round(stat.max_time * 1000, 2)
             data.append(d)
+            cls.throughput[url] = stat.count
         return data
 
 class _Worker(Thread):
