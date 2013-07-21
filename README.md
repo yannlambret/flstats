@@ -31,7 +31,6 @@ Data are in the JSON format, so you will get something like this:
       "stats": [
         {
           "avg": 72.0,
-          "count": 75,
           "max": 282.26,
           "min": 61.07,
           "throughput": 25,
@@ -47,7 +46,6 @@ something like this:
       "stats": [
         {
           "avg": 0.0,
-          "count": 75,
           "max": 0.0,
           "min": 0.0,
           "throughput": 25,
@@ -56,10 +54,9 @@ something like this:
       ]
     }
     
-But you get the idea! Each stat "object" have six fields:
+But you get the idea! Each stat "object" have five fields:
 
  - url: performance data are related to this specific URL
- - count: number of requests processed
  - max: longest execution time for a request
  - min: shortest execution time for a request
  - avg: average response time
