@@ -49,7 +49,6 @@ class FlstatsTestCase(unittest.TestCase):
         self.assertEqual(len(stats), 1)
         stat = stats.pop()
         self.assertEqual(stat['url'], 'http://localhost/url1')
-        self.assertEqual(stat['count'], 1)
         self.assertEqual(stat['throughput'], 1)
         self.assertTrue(stat['min'] == stat['avg'] == stat['max'])
 
@@ -65,7 +64,6 @@ class FlstatsTestCase(unittest.TestCase):
         self.assertEqual(len(stats), 1)
         stat = stats.pop()
         self.assertEqual(stat['url'], 'http://localhost/url1')
-        self.assertEqual(stat['count'], 10)
         self.assertEqual(stat['throughput'], 9)
         self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
 
@@ -84,11 +82,9 @@ class FlstatsTestCase(unittest.TestCase):
         self.assertEqual(len(stats), 2)
         for stat in stats:
             if stat['url'] == 'http://localhost/url1':
-                self.assertEqual(stat['count'], 10)
                 self.assertEqual(stat['throughput'], 0)
                 self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
             elif stat['url'] == 'http://localhost/url2':
-                self.assertEqual(stat['count'], 20)
                 self.assertEqual(stat['throughput'], 20)
                 self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
             else:

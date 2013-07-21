@@ -54,7 +54,6 @@ class _StatsManager(object):
             stat = cls.stats[url]
             d = {}
             d['url'] = url
-            d['count'] = stat.count
             d['throughput'] = stat.count - cls.throughput.setdefault(url, 0)
             # Converts time values to milliseconds
             d['avg'] = round((stat.total_time / stat.count) * 1000, 2)
