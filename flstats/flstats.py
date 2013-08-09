@@ -33,10 +33,8 @@ class _Stat(object):
     def update(self, time):
         self.count += 1
         self.total_time += time
-        if time < self.min_time:
-            self.min_time = time
-        if time > self.max_time:
-            self.max_time = time
+        self.min_time = min(time, self.min_time)
+        self.max_time = max(time, self.max_time)
 
 class _StatsManager(object):
     """The _StatsManager class, which handles the statistics for all URLs."""
