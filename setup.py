@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='flstats',
-    version='0.0.1',
+    version='0.1',
     url='http://github.com/yannlambret/flstats/',
     license='BSD',
     author='Yann Lambret',

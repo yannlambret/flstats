@@ -14,8 +14,8 @@ from Queue import Queue, Full
 from threading import Thread
 from time import time as now
 
-class _Stat(object):
-    """The _Stat class, which stores statistics for a specific URL."""
+class Stat(object):
+    """The Stat class, which stores statistics for a specific URL."""
 
     def __init__(self):
         # Number of requests for the URL
@@ -38,8 +38,8 @@ class _Stat(object):
         if time > self.max_time:
             self.max_time = time
 
-class _StatsManager(object):
-    """The _StatsManager class, which handles the statistics for all URLs."""
+class StatsManager(object):
+    """The StatsManager class, which handles the statistics for all URLs."""
 
     # Application statistics
     stats = {}
@@ -63,8 +63,8 @@ class _StatsManager(object):
             cls.throughput[url] = stat.count
         return data
 
-class _Worker(Thread):
-    """The _Worker class, which processes statistics updates."""
+class Worker(Thread):
+    """The Worker class, which processes statistics updates."""
 
     # We're using a queue to take care of concurrency
     queue = Queue(maxsize=0)
@@ -75,7 +75,7 @@ class _Worker(Thread):
     def run(self):
         while 1:
             url, time = self.__class__.queue.get()
-            _StatsManager.stats.setdefault(url, _Stat()).update(time)
+            StatsManager.stats.setdefault(url, Stat()).update(time)
             self.__class__.queue.task_done()
 
 #
@@ -93,7 +93,7 @@ def statistics(f):
         # The queue should never be full, but we can't
         # take the risk to block the request anyway
         try:
-            _Worker.queue.put_nowait((request.url, t2 - t1))
+            Worker.queue.put_nowait((request.url, t2 - t1))
         except Full:
             pass
         return result
@@ -109,12 +109,12 @@ webstatistics = Blueprint('webstatistics', __name__)
 def flstats():
     """Returns statistics in the JSON format."""
 
-    return jsonify({'stats': _StatsManager.process()})
+    return jsonify({'stats': StatsManager.process()})
 
 #
 # Runs the worker
 #
 
-_worker = _Worker()
-_worker.daemon = True
-_worker.start()
+worker = Worker()
+worker.daemon = True
+worker.start()

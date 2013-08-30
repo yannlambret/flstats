@@ -13,7 +13,7 @@ statistics for the flask microframework.
 """
 
 __title__ = 'flstats'
-__version__ = '0.0.1'
+__version__ = '0.1'
 __author__ = 'Yann Lambret'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2013 Yann Lambret'
