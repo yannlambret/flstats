@@ -28,12 +28,12 @@ class FlstatsTestCase(unittest.TestCase):
         @self.app.route('/url1')
         @statistics
         def url1():
-            return random.choice(range(0, 1000))
+            return random.randint(0, 1000)
         
         @self.app.route('/url2')
         @statistics
         def url2():
-            return random.choice(range(0, 1000))
+            return random.randint(0, 1000)
 
     def test_url1(self):
         """Test with one URL only"""
