@@ -14,6 +14,7 @@ from Queue import Queue, Full
 from threading import Thread
 from time import time as now
 
+
 class Stat(object):
     """The Stat class, which stores statistics for a specific URL."""
 
@@ -37,6 +38,7 @@ class Stat(object):
             self.min_time = time
         if time > self.max_time:
             self.max_time = time
+
 
 class StatsManager(object):
     """The StatsManager class, which handles the statistics for all URLs."""
@@ -63,6 +65,7 @@ class StatsManager(object):
             cls.throughput[url] = stat.count
         return data
 
+
 class Worker(Thread):
     """The Worker class, which processes statistics updates."""
 
@@ -77,6 +80,7 @@ class Worker(Thread):
             url, time = self.__class__.queue.get()
             StatsManager.stats.setdefault(url, Stat()).update(time)
             self.__class__.queue.task_done()
+
 
 #
 # statistics decorator
@@ -99,6 +103,7 @@ def statistics(f):
         return result
     return decorated
 
+
 #
 # Web statistics blueprint
 #
@@ -110,6 +115,7 @@ def flstats():
     """Returns statistics in the JSON format."""
 
     return jsonify({'stats': StatsManager.process()})
+
 
 #
 # Runs the worker
