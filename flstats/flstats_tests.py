@@ -13,9 +13,9 @@ import unittest
 
 from flstats import statistics, webstatistics
 from flask import Flask
+from time import sleep
 
 class FlstatsTestCase(unittest.TestCase):
-
 
     def setUp(self):
         """Creates a Flask test app and registers two routes
@@ -42,7 +42,7 @@ class FlstatsTestCase(unittest.TestCase):
 
         self.client.get('/url1')
 
-        # We ensure that the queue is empty
+        # We make sure data processing is complete
         sleep(0.1)
 
         response = self.client.get('/flstats/')
@@ -60,7 +60,7 @@ class FlstatsTestCase(unittest.TestCase):
         for i in range(0, 9):
             self.client.get('/url1')
 
-        # We ensure that the queue is empty
+        # We make sure data processing is complete
         sleep(0.1)
 
         response = self.client.get('/flstats/')
@@ -82,7 +82,7 @@ class FlstatsTestCase(unittest.TestCase):
         for i in range(0, 20):
             self.client.get('/url2')
 
-        # We ensure that the queue is empty
+        # We make sure data processing is complete
         sleep(0.1)
 
         response = self.client.get('/flstats/')
