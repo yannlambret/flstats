@@ -16,6 +16,7 @@ from flask import Flask
 
 class FlstatsTestCase(unittest.TestCase):
 
+
     def setUp(self):
         """Creates a Flask test app and registers two routes
         as well as the flstats blueprint.
@@ -35,10 +36,14 @@ class FlstatsTestCase(unittest.TestCase):
         def url2():
             return random.randint(0, 1000)
 
+
     def test_url1(self):
         """Test with one URL only"""
 
         self.client.get('/url1')
+
+        # We ensure that the queue is empty
+        sleep(0.1)
 
         response = self.client.get('/flstats/')
         self.assertEqual(response.status, '200 OK')
@@ -55,6 +60,9 @@ class FlstatsTestCase(unittest.TestCase):
         for i in range(0, 9):
             self.client.get('/url1')
 
+        # We ensure that the queue is empty
+        sleep(0.1)
+
         response = self.client.get('/flstats/')
         self.assertEqual(response.status, '200 OK')
  
@@ -67,11 +75,15 @@ class FlstatsTestCase(unittest.TestCase):
         self.assertEqual(stat['throughput'], 9)
         self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
 
+
     def test_url2(self):
         """Test with two URLs"""
 
         for i in range(0, 20):
             self.client.get('/url2')
+
+        # We ensure that the queue is empty
+        sleep(0.1)
 
         response = self.client.get('/flstats/')
         self.assertEqual(response.status, '200 OK')
@@ -89,6 +101,7 @@ class FlstatsTestCase(unittest.TestCase):
                 self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
             else:
                 self.fail('Invalid URL, WTF?!')
+
 
 if __name__ == '__main__':
     unittest.main()
