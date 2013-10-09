@@ -36,7 +36,6 @@ class FlstatsTestCase(unittest.TestCase):
         def url2():
             return random.randint(0, 1000)
 
-
     def test_url1(self):
         """Test with one URL only"""
 
@@ -50,8 +49,10 @@ class FlstatsTestCase(unittest.TestCase):
 
         # Statistics tests
         data = json.loads(response.data)
+
         stats = data['stats']
         self.assertEqual(len(stats), 1)
+
         stat = stats.pop()
         self.assertEqual(stat['url'], 'http://localhost/url1')
         self.assertEqual(stat['throughput'], 1)
@@ -68,13 +69,14 @@ class FlstatsTestCase(unittest.TestCase):
  
         # Statistics tests
         data = json.loads(response.data)
+
         stats = data['stats']
         self.assertEqual(len(stats), 1)
+
         stat = stats.pop()
         self.assertEqual(stat['url'], 'http://localhost/url1')
         self.assertEqual(stat['throughput'], 9)
         self.assertTrue(stat['min'] <= stat['avg'] <= stat['max'])
-
 
     def test_url2(self):
         """Test with two URLs"""
@@ -90,8 +92,10 @@ class FlstatsTestCase(unittest.TestCase):
 
         # Statistics tests
         data = json.loads(response.data)
+
         stats = data['stats']
         self.assertEqual(len(stats), 2)
+
         for stat in stats:
             if stat['url'] == 'http://localhost/url1':
                 self.assertEqual(stat['throughput'], 0)
