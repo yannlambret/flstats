@@ -28,7 +28,7 @@ class Stat(object):
         # Shortest request execution time
         self.min_time = 3600.
 
-        # Longest request execution time 
+        # Longest request execution time
         self.max_time = 0.
 
     def update(self, time):
@@ -54,14 +54,13 @@ class StatsManager(object):
         data = []
         for url in cls.stats:
             stat = cls.stats[url]
-            d = {}
-            d['url'] = url
-            d['throughput'] = stat.count - cls.throughput.setdefault(url, 0)
-            # Converts time values to milliseconds
-            d['avg'] = round((stat.total_time / stat.count) * 1000, 2)
-            d['min'] = round(stat.min_time * 1000, 2)
-            d['max'] = round(stat.max_time * 1000, 2)
-            data.append(d)
+            data.append({
+                'url': url,
+                'throughput': stat.count - cls.throughput.setdefault(url, 0),
+                'avg': round((stat.total_time / stat.count) * 1000, 2),
+                'min': round(stat.min_time * 1000, 2),
+                'max': round(stat.max_time * 1000, 2)
+            })
             cls.throughput[url] = stat.count
         return data
 
@@ -90,7 +89,7 @@ def statistics(f):
     """The decorator used in the application to collect statistics."""
 
     @wraps(f)
-    def decorated(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         t1 = now()
         result = f(*args, **kwargs)
         t2 = now()
@@ -101,7 +100,7 @@ def statistics(f):
         except Full:
             pass
         return result
-    return decorated
+    return wrapper
 
 
 #
@@ -109,6 +108,7 @@ def statistics(f):
 #
 
 webstatistics = Blueprint('webstatistics', __name__)
+
 
 @webstatistics.route('/flstats/', methods=['GET'])
 def flstats():

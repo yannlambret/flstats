@@ -15,12 +15,13 @@ from flstats import statistics, webstatistics
 from flask import Flask
 from time import sleep
 
+
 class FlstatsTestCase(unittest.TestCase):
 
     def setUp(self):
         """Creates a Flask test app and registers two routes
         as well as the flstats blueprint.
-        """ 
+        """
 
         self.app = Flask(__name__)
         self.app.register_blueprint(webstatistics)
@@ -30,7 +31,7 @@ class FlstatsTestCase(unittest.TestCase):
         @statistics
         def url1():
             return random.randint(0, 1000)
-        
+
         @self.app.route('/url2')
         @statistics
         def url2():
@@ -66,7 +67,7 @@ class FlstatsTestCase(unittest.TestCase):
 
         response = self.client.get('/flstats/')
         self.assertEqual(response.status, '200 OK')
- 
+
         # Statistics tests
         data = json.loads(response.data)
 
