@@ -52,8 +52,7 @@ class StatsManager(object):
     @classmethod
     def process(cls):
         data = []
-        for url in cls.stats:
-            stat = cls.stats[url]
+        for url, stat in cls.stats.iteritems():
             data.append({
                 'url': url,
                 'throughput': stat.count - cls.throughput.setdefault(url, 0),
